@@ -12,21 +12,17 @@ const server = () => {
     res.json(await todoService.getTodos());
   });
 
-  /**
-  POST /api/todo
-  {
-   "task": "Some API"
-  }
-
-   {
-    "todos": [
-      {
-        "task": "Some API"
-      }
-    ]
-   }
-  **/
+  server.post('/api/todo', async (req, res) => {
+    const { task } = req.body;
+    try {
+      const newTodo = await todoService.addTodo(task);
+      res.status(201).json(newTodo);
+    } catch (error) {
+      res.status(400).json({ error: error.message });
+    }
+  });
 
   return server;
 };
+
 module.exports = server;
