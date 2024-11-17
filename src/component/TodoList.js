@@ -1,34 +1,35 @@
-import React, {Component} from "react";
+import React, { Component } from "react";
+import { connect } from "react-redux";
+import { fetchTodos } from "../actions";
 import Todo from "./Todo";
-import {fetchTodos} from "../actions";
-import {connect} from "react-redux";
 
 class TodoList extends Component {
-  state = {};
-
   componentDidMount() {
     this.props.fetchTodos();
   }
 
   render() {
-    const {todos} = this.props.data;
-    return (<ul className="todo-list">
-      {todos && todos.length
-        ? todos.map((todo, index) => {
-          return <Todo key={`todo-${index}`} todo={todo.task}/>;
-        })
-        : "No todos, yay!"}
-    </ul>);
+    const { todos } = this.props.data;
+
+    return (
+      <ul className="todo-list">
+        {todos && todos.length ? (
+          todos.map((todo, index) => (
+            <Todo key={`todo-${index}`} todo={todo} />
+          ))
+        ) : (
+          "No todos, yay!"
+        )}
+      </ul>
+    );
   }
 }
 
-const mapStateToProps = ({data = {}, isLoadingData = false}) => ({
+const mapStateToProps = ({ data = {} }) => ({
   data,
-  isLoadingData
 });
+
 export default connect(
   mapStateToProps,
-  {
-    fetchTodos
-  }
+  { fetchTodos }
 )(TodoList);
